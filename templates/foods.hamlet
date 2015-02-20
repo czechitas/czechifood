@@ -7,17 +7,22 @@
 <h2>Všechny jídla
 <table class="table">
   <tr>
-    <th> Název
-    <th> Popis
-    <th> Obrázek
-    <th> Akce
+    <th>Název
+    <th>Popis
+    <th>Obrázek
+    <th>Akce
+
   $forall Entity key food <- foods
     <tr>
       <td><a href=@{FoodR key}>#{foodTitle food}
       <td>#{foodDescription food}
+
       $maybe image <- foodImageUrl food
         <td><a href="#{image}"><image src="#{image}" alt="picture of food" class="food-picture">
       $nothing
         <td>
-      <td><span class="glyphicon glyphicon-trash" aria-hidden="true"> | 
+
+      <td>
+        ^{linkToMethodConfirm "DELETE" "Are you sure?" (FoodR key) [] (glyphicon "trash")}
+        &nbsp;
         <a href=@{FoodR key}><span class="glyphicon glyphicon-pencil" aria-hidden="true">

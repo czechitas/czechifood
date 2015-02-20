@@ -7,4 +7,4 @@
 / HomeR GET
 
 /foods FoodsR GET POST
-/foods/#FoodId FoodR GET
+/foods/#FoodId FoodR GET PUT DELETE

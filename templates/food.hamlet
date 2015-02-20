@@ -1,4 +1,4 @@
 <h1>Editace - #{foodTitle food}
 
-<form>
+<form action="@{FoodR foodId}?_method=PUT" method="POST">
   ^{form}
