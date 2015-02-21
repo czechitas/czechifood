@@ -48,7 +48,7 @@ linkToMethodConfirm method confirmText route attrs
 
 getHomeR :: Handler Html
 getHomeR = do
-    foods <- zip [1..] <$> runDB $ selectList [] [Asc FoodTitle]
+    foods <- zip [1..] <$> (runDB $ selectList [] [Asc FoodTitle])
     defaultLayout $ do
         aDomId <- newIdent
         setTitle "Czechifood"

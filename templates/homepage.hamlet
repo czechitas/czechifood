@@ -8,9 +8,9 @@
     <th>Obrázek
 
   $forall (n, Entity key food) <- foods
-    <tr>Cislo #{show n}
     <tr>
-      <td><a href=@{FoodR key}>#{foodTitle food}
+      <td>#{show n}
+      <td>#{foodTitle food}
       <td>#{foodDescription food}
 
       $maybe image <- foodImageUrl food
