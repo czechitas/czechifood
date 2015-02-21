@@ -1,7 +1,23 @@
-<p>Your current auth ID: #{show maid}
- $maybe _ <- maid
-     <p>
-         <a href=@{AuthR LogoutR}>Logout
- $nothing
-     <p>
-         <a href=@{AuthR LoginR}>Go to the login page
+<h1>Czechitas objednávka jídla - Czechifood
+<h2>Krok 1. Vyber si
+<table class="table">
+  <tr>
+    <th>Číslo
+    <th>Název
+    <th>Popis
+    <th>Obrázek
+
+  $forall (n, Entity key food) <- foods
+    <tr>Cislo #{show n}
+    <tr>
+      <td><a href=@{FoodR key}>#{foodTitle food}
+      <td>#{foodDescription food}
+
+      $maybe image <- foodImageUrl food
+        <td><image src="#{image}" alt="picture of food" class="food-picture">
+      $nothing
+
+
+
+<h2>Krok 2. Objednej
+<h2>Krok 3. Dobrou chuť!

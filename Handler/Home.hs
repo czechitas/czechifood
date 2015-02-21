@@ -48,7 +48,7 @@ linkToMethodConfirm method confirmText route attrs
 
 getHomeR :: Handler Html
 getHomeR = do
-    maid <- maybeAuthId
+    foods <- zip [1..] <$> runDB $ selectList [] [Asc FoodTitle]
     defaultLayout $ do
         aDomId <- newIdent
         setTitle "Czechifood"
@@ -63,12 +63,23 @@ foodForm food = renderBootstrap3 BootstrapBasicForm $ Food
 
 getFoodsR :: Handler Html
 getFoodsR = do
+  muser <- currentUser
+
   (form, _) <- generateFormPost $ foodForm Nothing
   foods <- runDB $ selectList [] [Asc FoodTitle]
   defaultLayout $(widgetFile "foods")
 
+currentUser :: Handler (Maybe User)
+currentUser = do
+  maid <- maybeAuthId
+  case maid of
+    Just userId -> runDB $ get userId
+    Nothing -> return Nothing
+
 postFoodsR :: Handler Html
 postFoodsR = do
+    muser <- currentUser
+
     ((res, form),_) <- runFormPost $ foodForm Nothing
     case res of
       FormSuccess food -> do
@@ -102,5 +113,5 @@ putFoodR foodId = do
 deleteFoodR :: FoodId -> Handler Html
 deleteFoodR foodId = do
   runDB $ delete foodId
-  setMessage "Jidlo smazano."
+  setMessage "Jídlo smazáno."
   redirect FoodsR

@@ -1,5 +1,12 @@
 <h1>Administrace jídel
+$maybe user <- muser
+  <p>Přihlášená jako: #{ userIdent user}&nbsp;
+     | <a href=@{AuthR LogoutR}>Logout</a>
+$nothing
+  <a href=@{AuthR LoginR}>Login</a>
 
+
+<h2>Nové jídlo
 <form action=@{FoodsR} method="POST">
   ^{form}
 
