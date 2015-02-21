@@ -1,23 +1,28 @@
-<h1>Czechitas objednávka jídla - Czechifood
-<h2>Krok 1. Vyber si
-<table class="table">
-  <tr>
-    <th>Číslo
-    <th>Název
-    <th>Popis
-    <th>Obrázek
-
-  $forall (n, Entity key food) <- foods
+<h1>Czechitas objednávka jídla
+<div class="row">
+  <h2>Krok 1. Vyber si
+  <table class="table">
     <tr>
-      <td>#{show n}
-      <td>#{foodTitle food}
-      <td>#{foodDescription food}
+      <th>Číslo
+      <th>Název
+      <th>Popis
+      <th>Obrázek
 
-      $maybe image <- foodImageUrl food
-        <td><image src="#{image}" alt="picture of food" class="food-picture">
-      $nothing
+    $forall (n, Entity _ food) <- foods
+      <tr data-food-number=#{n}>
+        <td><span class="badge">#{show n}</span>
+        <td>#{foodTitle food}
+        <td>#{foodDescription food}
 
-
+        $maybe image <- foodImageUrl food
+          <td><image src="#{image}" alt="picture of food" class="food-picture">
+        $nothing
 
 <h2>Krok 2. Objednej
-<h2>Krok 3. Dobrou chuť!
+  <div class="row">
+    <div class="col-md-8">
+      <form action=@{HomeR} method="POST" class="order-form">
+        ^{form}
+
+<div class="row">
+  <h2>Krok 3. Dobrou chuť!

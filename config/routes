@@ -5,6 +5,7 @@
 /robots.txt RobotsR GET
 
 / HomeR GET
+/welcome WelcomeR GET POST DELETE
 
 /foods FoodsR GET POST
 /foods/#FoodId FoodR GET PUT DELETE

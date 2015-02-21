@@ -1,15 +1,39 @@
-.brand-image {
-  width: 100px;
-}
-
-.food-picture {
-  height: 80px;
-}
-
 a {
   color: #b82e80;
 }
 
 a:hover {
   color: #b82e80;
+}
+
+h1 {
+  color: #b82e80;
+  text-align: center;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+}
+
+.brand-image {
+  width: 100px;
+  margin-top: -3px;
+}
+
+.food-picture {
+  height: 80px;
+}
+
+.center {
+  text-align: center;
+}
+
+.order-form label {
+  font-size: 12px;
+  font-weight: normal;
+}
+
+.navbar-brand {
+  font-size: 14px;
 }

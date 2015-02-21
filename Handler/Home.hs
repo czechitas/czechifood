@@ -15,6 +15,10 @@ import Yesod.Form.Bootstrap3
 -- functions. You can spread them across multiple files if you are so
 -- inclined, or create a single monolithic file.
 
+-- HELPERS
+defaultFoodPrice :: Int
+defaultFoodPrice = 130
+
 class MakeWidget a where
   makeWidget :: a -> Widget
 
@@ -27,8 +31,6 @@ instance MakeWidget Text where
 glyphicon :: Text -> Widget
 glyphicon name = toWidget [hamlet|<span class="glyphicon glyphicon-#{name}">|]
 
-linkToPost = linkToMethod "POST"
-
 linkToMethod :: MakeWidget a => Text -> Route App -> [(Text,Text)] -> a -> Widget
 linkToMethod method url attributes content =
     toWidget [whamlet|
@@ -36,38 +38,15 @@ linkToMethod method url attributes content =
     <a href="@{url}" rel="nofollow" data-method="#{method}" *{attributes}>^{makeWidget content}</a>
     |]
 
-
 type ConfirmText = Text
-linkToMethodConfirm :: MakeWidget a =>
-                       ConfirmText -> Text -> Route App -> [(Text,Text)] -> a -> Widget
+type MethodText = Text
+linkToMethodConfirm :: MethodText -> ConfirmText -> Route App -> [(Text,Text)] -> Widget -> Widget
 linkToMethodConfirm method confirmText route attrs
   = linkToMethod method route (("data-confirm", confirmText):attrs)
 
-
-
-
-getHomeR :: Handler Html
-getHomeR = do
-    foods <- zip [1..] <$> (runDB $ selectList [] [Asc FoodTitle])
-    defaultLayout $ do
-        aDomId <- newIdent
-        setTitle "Czechifood"
-        $(widgetFile "homepage")
-
-foodForm :: Maybe Food -> Form Food
-foodForm food = renderBootstrap3 BootstrapBasicForm $ Food
-            <$> areq textField (bfs ("Název" :: Text)) (foodTitle `fmap` food)
-            <*> areq textField (bfs ("Popis" :: Text)) (foodDescription `fmap` food)
-            <*> aopt textField (bfs ("Url obrázku" :: Text)) (foodImageUrl `fmap` food)
-            <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-default" [("attribute-name","attribute-value")])
-
-getFoodsR :: Handler Html
-getFoodsR = do
-  muser <- currentUser
-
-  (form, _) <- generateFormPost $ foodForm Nothing
-  foods <- runDB $ selectList [] [Asc FoodTitle]
-  defaultLayout $(widgetFile "foods")
+tlinkToMethodConfirm :: MethodText -> ConfirmText -> Route App -> [(Text,Text)] -> Text -> Widget
+tlinkToMethodConfirm method confirmText route attrs
+  = linkToMethod method route (("data-confirm", confirmText):attrs)
 
 currentUser :: Handler (Maybe User)
 currentUser = do
@@ -76,21 +55,53 @@ currentUser = do
     Just userId -> runDB $ get userId
     Nothing -> return Nothing
 
+-- HOME
+getHomeR :: Handler Html
+getHomeR = do
+    foods <- zip [(1::Int)..] <$> (runDB $ selectList [] [Asc FoodTitle])
+    (form, _) <- generateFormPost $ orderForm defaultFoodPrice Nothing
+    defaultLayout $ do
+        setTitle "Czechifood"
+        $(widgetFile "homepage")
+
+data Order = Order { orderEmail :: Text, orderFood :: Int, orderPrice :: Int }
+
+orderForm :: Int -> Maybe Order -> Form Order
+orderForm price order = renderBootstrap3 BootstrapBasicForm $ Order
+  <$> areq textField (bfs ("Email" :: Text)) (orderEmail <$> order)
+  <*> areq intField (bfs ("Jidlo" :: Text)) (orderFood <$> order)
+  <*> pure price
+  <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-default" [])
+
+
+-- FOODS
+foodForm :: Maybe Food -> Form Food
+foodForm food = renderBootstrap3 BootstrapBasicForm $ Food
+            <$> areq textField (bfs ("Název" :: Text)) (foodTitle `fmap` food)
+            <*> areq textField (bfs ("Popis" :: Text)) (foodDescription `fmap` food)
+            <*> aopt textField (bfs ("Url obrázku" :: Text)) (foodImageUrl `fmap` food)
+            <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-default" [])
+
+getFoodsR :: Handler Html
+getFoodsR = do
+  (form, _) <- generateFormPost $ foodForm Nothing
+  foods <- runDB $ selectList [] [Asc FoodTitle]
+  defaultLayout $(widgetFile "foods")
+
 postFoodsR :: Handler Html
 postFoodsR = do
-    muser <- currentUser
-
     ((res, form),_) <- runFormPost $ foodForm Nothing
     case res of
       FormSuccess food -> do
         setMessage $ toHtml $ "Jídlo vloženo: " ++ foodTitle food
-        runDB $ insert food
+        _ <- runDB $ insert food
         return ()
       _ -> return ()
 
     foods <- runDB $ selectList [] [Asc FoodTitle]
     defaultLayout $(widgetFile "foods")
 
+-- FOOD
 getFoodR :: FoodId -> Handler Html
 getFoodR foodId = do
   food <- runDB $ get404 foodId
@@ -115,3 +126,28 @@ deleteFoodR foodId = do
   runDB $ delete foodId
   setMessage "Jídlo smazáno."
   redirect FoodsR
+
+
+-- WELCOME
+getWelcomeR :: Handler Html
+getWelcomeR = do
+  memail <- lookupSession emailSessionKey
+  defaultLayout $(widgetFile "login")
+
+emailSessionKey :: Text
+emailSessionKey = "email"
+
+postWelcomeR :: Handler Html
+postWelcomeR = do
+  email <- runInputPost $ ireq textField "email"
+  setMessage . toHtml $ "Přihlášená jako: " ++ email
+  setSession emailSessionKey email
+  redirect HomeR
+
+data Participant = Participant { participantEmail :: Text } deriving Show
+
+deleteWelcomeR :: Handler Html
+deleteWelcomeR = do
+  deleteSession emailSessionKey
+  setMessage "Odhlášení bylo úspěšné"
+  redirect WelcomeR

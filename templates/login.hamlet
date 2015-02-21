@@ -1,0 +1,11 @@
+<div class="row">
+  <h1>Přihlášení
+  <div class="col-md-4 col-md-offset-4">
+
+    <br>
+    $maybe email <- memail
+      <p class="alert alert-info">Přihlášená jako: #{email} | ^{tlinkToMethodConfirm "DELETE" "Are you sure?" WelcomeR [] "Odhlásit"}
+
+    <form action=@{WelcomeR} method="POST">
+      <input type="text" name="email" placeholder="Email" required>
+      <button class="btn btn-info">Přihlásit

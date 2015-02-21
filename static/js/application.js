@@ -1,4 +1,10 @@
 $(function() {
+    // $("tr[data-food-number]").click(function() {
+    //     $("tr[data-food-number]").removeClass("selected-food");
+    //     var number = $(this).attr("data-food-number");
+    //     $(this).addClass("selected-food");
+    // });
+
     $(document).on("click", "a[data-method]", function() {
         var link = $(this);
         var method = link.data('method');
