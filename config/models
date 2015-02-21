@@ -3,15 +3,22 @@ User
     password Text Maybe
     UniqueUser ident
     deriving Typeable Show
+
 Email
     email Text
     user UserId Maybe
     verkey Text Maybe
     UniqueEmail email
+
 Food
     title Text
     description Text
     imageUrl Text Maybe
+    deriving Show
+
+Order
+    email Text
+    food FoodId
     deriving Show
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

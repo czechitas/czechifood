@@ -55,27 +55,44 @@ currentUser = do
     Just userId -> runDB $ get userId
     Nothing -> return Nothing
 
+requireEmail :: Handler Text
+requireEmail = do
+  memail <- lookupSession emailSessionKey
+  case memail of
+    Just email -> return email
+    Nothing -> do
+      setMessage "Musite se prihlasit"
+      redirect WelcomeR
+
 -- HOME
 getHomeR :: Handler Html
 getHomeR = do
     foods <- runDB $ selectList [] [Asc FoodTitle]
-    memail <- lookupSession emailSessionKey
-    case memail of
-      Just email -> do
-        (form, _) <- generateFormPost $ orderForm foods defaultFoodPrice Nothing email
-        defaultLayout $ do
-            setTitle "Czechifood"
-            $(widgetFile "homepage")
-      Nothing -> do
-        redirect WelcomeR
+    email <- requireEmail
 
-data Order = Order { orderEmail :: Text, orderFood :: FoodId, orderPrice :: Int }
+    (form, _) <- generateFormPost $ orderForm foods Nothing email
+    defaultLayout $ do
+        setTitle "Czechifood"
+        $(widgetFile "homepage")
 
-orderForm :: [Entity Food] -> Int -> Maybe Order -> Text -> Form Order
-orderForm foods price order email = renderBootstrap3 BootstrapBasicForm $ Order
+postHomeR :: Handler Html
+postHomeR = do
+  ((res, form), _) <- runFormPost $ orderForm [] Nothing ""
+  case res of
+    FormSuccess order -> do
+      setMessage "Objednávka vytvořena."
+      runDB $ insert order
+      return ()
+    _ -> return ()
+
+  foods <- runDB $ selectList [] [Asc FoodTitle]
+  email <- requireEmail
+  defaultLayout $(widgetFile "homepage")
+
+orderForm :: [Entity Food] -> Maybe Order -> Text -> Form Order
+orderForm foods order email = renderBootstrap3 BootstrapBasicForm $ Order
   <$> pure email
   <*> areq (selectFieldList foodList) "Jidlo" (orderFood <$> order)
-  <*> pure price
   <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-info" [])
   where
     foodList = map (\(Entity key food) -> (foodTitle food, key)) foods
