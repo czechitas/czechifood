@@ -19,10 +19,10 @@
         $nothing
 
 <h2>Krok 2. Objednej
-  <div class="row">
-    <div class="col-md-8">
-      <form action=@{HomeR} method="POST" class="order-form">
-        ^{form}
+<div class="row">
+  <div class="col-md-8">
+    <form action=@{HomeR} method="POST" class="order-form">
+      ^{form}
 
 <div class="row">
   <h2>Krok 3. Dobrou chuť!
