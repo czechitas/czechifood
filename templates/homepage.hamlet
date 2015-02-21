@@ -3,14 +3,12 @@
   <h2>Krok 1. Vyber si
   <table class="table">
     <tr>
-      <th>Číslo
       <th>Název
       <th>Popis
       <th>Obrázek
 
-    $forall (n, Entity _ food) <- foods
-      <tr data-food-number=#{n}>
-        <td><span class="badge">#{show n}</span>
+    $forall (Entity _ food) <- foods
+      <tr>
         <td>#{foodTitle food}
         <td>#{foodDescription food}
 
@@ -19,9 +17,9 @@
         $nothing
 
 
-<h2>Krok 2. Objednej
 <div class="row">
-  <div class="col-md-8">
+  <h2>Krok 2. Objednej
+  <div class="col-md-8 food-input">
     <form action=@{HomeR} method="POST" class="order-form">
       ^{form}
 

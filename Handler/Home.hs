@@ -58,11 +58,11 @@ currentUser = do
 -- HOME
 getHomeR :: Handler Html
 getHomeR = do
-    foods <- zip [(1::Int)..] <$> (runDB $ selectList [] [Asc FoodTitle])
+    foods <- runDB $ selectList [] [Asc FoodTitle]
     memail <- lookupSession emailSessionKey
     case memail of
       Just email -> do
-        (form, _) <- generateFormPost $ orderForm (map snd foods) defaultFoodPrice Nothing email
+        (form, _) <- generateFormPost $ orderForm foods defaultFoodPrice Nothing email
         defaultLayout $ do
             setTitle "Czechifood"
             $(widgetFile "homepage")
@@ -76,7 +76,7 @@ orderForm foods price order email = renderBootstrap3 BootstrapBasicForm $ Order
   <$> pure email
   <*> areq (selectFieldList foodList) "Jidlo" (orderFood <$> order)
   <*> pure price
-  <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-default" [])
+  <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-info" [])
   where
     foodList = map (\(Entity key food) -> (foodTitle food, key)) foods
 
