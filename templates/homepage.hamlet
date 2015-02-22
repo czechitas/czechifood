@@ -18,7 +18,7 @@
           $nothing
 
     $maybe food <- mfood
-      <div class="alert alert-warning">Už máš objednáno: #{foodTitle food}, pro změnu odešli formulář znovu.
+      <div class="alert alert-danger">Už máš objednáno: #{foodTitle food}, pro změnu odešli formulář znovu.
 
 <div class="row">
   <h2>Krok 2. Objednej

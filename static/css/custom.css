@@ -44,3 +44,8 @@ footer {
 .food-input label {
   margin-right: 10px;
 }
+
+.pink {
+  color: #b82e80;
+  font-weight: bold;
+}

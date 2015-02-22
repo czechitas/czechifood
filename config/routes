@@ -9,3 +9,5 @@
 
 /foods FoodsR GET POST
 /foods/#FoodId FoodR GET PUT DELETE
+
+/admin AdminR GET

@@ -1,0 +1,20 @@
+<h1>Admin panel
+<h2>Všechny objednávky:
+<div class="col-md-6">
+  <table class="table">
+    <tr>
+      <th>Email
+      <th>Jídlo
+    $forall (Entity orderId order, Entity foodId food) <- orderFoods
+      <tr>
+        <td>#{orderEmail order}
+        <td>#{foodTitle food}
+<div class="col-md-6">
+  <div class="well">
+    <h3>Počet objednávek celkem: <span class="pink">#{orderCount}</span>
+    <h3>Počet objednávek dle jídla:
+    <ul>
+      $forall (name, count) <- Map.toList foodCounts
+        <li>#{name} - <span class="pink">#{count}</span>
+  <div class="well">
+    <h3>Celková cena: #{price} Kč

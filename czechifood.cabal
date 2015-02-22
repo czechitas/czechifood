@@ -24,6 +24,7 @@ library
                      Handler.Home
                      Handler.Food
                      Handler.Welcome
+                     Handler.Admin
                      Helpers.Common
 
     if flag(dev) || flag(library-only)
@@ -85,6 +86,7 @@ library
                  , vector
                  , time
                  , foreign-store
+                 , esqueleto                     >= 2.1        && < 2.2
 
 executable         czechifood
     if flag(library-only)
