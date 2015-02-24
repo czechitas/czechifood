@@ -1,0 +1,11 @@
+<h1>Admin sekce - Přihlášení
+<h4 class="center menu-links"><a href="@{AdminLoginR}">Přihlášení</a> | <a href="@{FoodsR}">Správa jídel</a> | <a href="@{AdminR}">Seznam objednávek</a>
+<br>
+<div class="col-md-4 col-md-offset-4 well">
+  $if adminLogged
+    <p>Povedlo se!
+    <p>^{tlinkToMethodConfirm "DELETE" "Are you sure?" AdminLoginR [] "Odhlásit"}
+  $else
+    <form action=@{AdminLoginR} method="POST">
+      <input type="text" name="password" placeholder="Heslo" required>
+      <button class="btn btn-info">Přihlásit jako admin

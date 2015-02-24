@@ -11,3 +11,4 @@
 /foods/#FoodId FoodR GET PUT DELETE
 
 /admin AdminR GET
+/admin-login AdminLoginR GET POST DELETE

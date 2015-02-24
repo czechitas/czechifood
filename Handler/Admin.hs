@@ -7,7 +7,7 @@ import Database.Esqueleto as E
 -- import qualified Database.Persist as P
 
 getAdminR :: Handler Html
-getAdminR = do
+getAdminR = requireAdmin $ do
   orderFoods <- runDB $ select $ from $ \(o, f) -> do
               where_ (o ^. OrderFood ==. f ^. FoodId)
               return (o,f)
@@ -21,3 +21,24 @@ getAdminR = do
   defaultLayout $ do
       setTitle "Czechifood"
       $(widgetFile "admin")
+
+getAdminLoginR :: Handler Html
+getAdminLoginR = do
+  adminLogged <- isAdmin
+  defaultLayout $(widgetFile "admin-login")
+
+postAdminLoginR :: Handler Html
+postAdminLoginR = do
+  password <- runInputPost $ ireq textField "password"
+  if password == "ditamija"
+    then do
+      setSession adminSessionKey password
+      setMessage "Přihlášená jako admin"
+    else return ()
+  redirect AdminLoginR
+
+deleteAdminLoginR :: Handler Html
+deleteAdminLoginR = do
+  deleteSession adminSessionKey
+  setMessage "Odhlášení bylo úspěšné"
+  redirect AdminLoginR

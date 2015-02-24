@@ -11,8 +11,9 @@ foodForm food = renderBootstrap3 BootstrapBasicForm $ Food
             <*> aopt textField (bfs ("Url obrázku" :: Text)) (foodImageUrl `fmap` food)
             <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-default" [])
 
+
 getFoodsR :: Handler Html
-getFoodsR = do
+getFoodsR = requireAdmin $ do
   (form, _) <- generateFormPost $ foodForm Nothing
   foods <- runDB $ selectList [] [Asc FoodTitle]
   defaultLayout $(widgetFile "foods")
@@ -32,7 +33,7 @@ postFoodsR = do
 
 
 getFoodR :: FoodId -> Handler Html
-getFoodR foodId = do
+getFoodR foodId = requireAdmin $ do
   food <- runDB $ get404 foodId
   (form, _) <- generateFormPost $ foodForm $ Just food
 

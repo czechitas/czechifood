@@ -3,12 +3,30 @@
 module Helpers.Common where
 
 import Import
+import Control.Monad
 
 emailSessionKey :: Text
 emailSessionKey = "email"
 
+adminSessionKey :: Text
+adminSessionKey = "password"
+
 defaultFoodPrice :: Int
 defaultFoodPrice = 130
+
+
+requireAdmin action = do
+  isLogged <- isAdmin
+  if isLogged
+    then action
+    else redirect AdminLoginR
+
+isAdmin :: MonadHandler m => m Bool
+isAdmin = do
+  mpassword <- lookupSession adminSessionKey
+  case mpassword of
+    Just password -> return True
+    Nothing -> return False
 
 class MakeWidget a where
   makeWidget :: a -> Widget

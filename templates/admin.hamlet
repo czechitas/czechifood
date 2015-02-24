@@ -1,4 +1,6 @@
-<h1>Admin panel
+<h1>Admin sekce - Seznam objednávek
+<h4 class="center menu-links"><a href="@{AdminLoginR}">Přihlášení</a> | <a href="@{FoodsR}">Správa jídel</a> | <a href="@{AdminR}">Seznam objednávek</a>
+
 <h2>Všechny objednávky:
 <div class="col-md-6">
   <table class="table">

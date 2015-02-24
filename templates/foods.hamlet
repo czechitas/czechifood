@@ -1,4 +1,5 @@
-<h1>Administrace jídel
+<h1>Admin sekce - Správa jídel
+<h4 class="center menu-links"><a href="@{AdminLoginR}">Přihlášení</a> | <a href="@{FoodsR}">Správa jídel</a> | <a href="@{AdminR}">Seznam objednávek</a>
 
 <h2>Nové jídlo
 <form action=@{FoodsR} method="POST">

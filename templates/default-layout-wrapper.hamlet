@@ -34,7 +34,7 @@ $newline never
             <img class="brand-image" alt="Brand" src="http://www.czechitas.cz/wp-content/themes/czechitas/images/logo.png">
           <a class="navbar-brand" href="@{WelcomeR}">Přihlášení
           <a class="navbar-brand" href="@{HomeR}">Objednávka jídla
-        <a href="@{FoodsR}" class="pull-right">Administrace
+        <a href="@{AdminLoginR}" class="pull-right">Administrace
     <div class="container">
       <header>
       <div id="main" role="main">
