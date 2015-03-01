@@ -7,7 +7,7 @@ import Yesod.Form.Bootstrap3
 getWelcomeR :: Handler Html
 getWelcomeR = do
   memail <- lookupSession emailSessionKey
-  defaultLayout $(widgetFile "login")
+  defaultLayout $(widgetFile "welcome")
 
 postWelcomeR :: Handler Html
 postWelcomeR = do

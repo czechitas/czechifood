@@ -22,6 +22,12 @@ getAdminR = requireAdmin $ do
       setTitle "Czechifood"
       $(widgetFile "admin")
 
+deleteOrderR :: OrderId -> Handler Html
+deleteOrderR orderId = do
+  runDB $ Import.delete orderId
+  setMessage "Objednávka smazána."
+  redirect AdminR
+
 getAdminLoginR :: Handler Html
 getAdminLoginR = do
   adminLogged <- isAdmin

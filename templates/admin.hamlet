@@ -7,10 +7,12 @@
     <tr>
       <th>Email
       <th>Jídlo
+      <th>Smazat objednávku
     $forall (Entity orderId order, Entity foodId food) <- orderFoods
       <tr>
         <td>#{orderEmail order}
         <td>#{foodTitle food}
+        <td>^{linkToMethodConfirm "DELETE" "Are you sure?" (OrderR orderId) [] (glyphicon "trash")}
 <div class="col-md-6">
   <div class="well">
     <h3>Počet objednávek celkem: <span class="pink">#{orderCount}</span>

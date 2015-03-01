@@ -11,4 +11,6 @@
 /foods/#FoodId FoodR GET PUT DELETE
 
 /admin AdminR GET
+/order/#OrderId OrderR DELETE
+
 /admin-login AdminLoginR GET POST DELETE
