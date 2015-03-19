@@ -33,8 +33,15 @@ postHomeR = do
   ((res, form), _) <- runFormPost $ orderForm foods Nothing email
   case res of
     FormSuccess order -> do
-      setMessage "Objednávka vytvořena."
-      _ <- runDB $ insert order
+      morder <- runDB $ selectFirst [ OrderEmail ==. email ] []
+      case morder of
+        Just ord -> do
+          setMessage "Objednávka byla změněna."
+          runDB $ replace (entityKey ord) order 
+        Nothing -> do
+          setMessage "Objednávka vytvořena."
+          void $ runDB $ insert order
+
       return ()
     _ -> return ()
 

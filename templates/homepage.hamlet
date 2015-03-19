@@ -1,4 +1,5 @@
 <h1>Czechitas objednávka jídla
+<p class="center"> Jednotná cena objednávky - <b>130 Kč</b>
 <div class="row">
   <h2>Krok 1. Vyber si
   <div class="col-md-8 food-input well">
@@ -16,12 +17,12 @@
           $maybe image <- foodImageUrl food
             <td><image src="#{image}" alt="picture of food" class="food-picture">
           $nothing
-
-    $maybe food <- mfood
-      <div class="alert alert-danger">Už máš objednáno: #{foodTitle food}, pro změnu odešli formulář znovu.
-
 <div class="row">
   <h2>Krok 2. Objednej
+  <div class="row">
+    <div class="col-md-8">
+      $maybe food <- mfood
+        <div class="alert alert-danger">Už máš objednáno: #{foodTitle food}, pro změnu odešli formulář znovu.
   <div class="col-md-8 food-input well">
     <form action=@{HomeR} method="POST" class="order-form">
       ^{form}
