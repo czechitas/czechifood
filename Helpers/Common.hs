@@ -12,7 +12,7 @@ adminSessionKey :: Text
 adminSessionKey = "password"
 
 defaultFoodPrice :: Int
-defaultFoodPrice = 130
+defaultFoodPrice = 150
 
 
 requireAdmin action = do
