@@ -13,6 +13,9 @@ getAdminR = requireAdmin $ do
               return (o,f)
 
   let orderCount = length orderFoods
+  priceRef <- fmap price getYesod
+  defaultFoodPrice <- liftIO $ readIORef priceRef
+
   let price = orderCount * defaultFoodPrice
 
   let f (_, Entity _ food) hash = Map.insertWith (+) (foodTitle food) (1 :: Int) hash
@@ -26,6 +29,12 @@ deleteOrderR :: OrderId -> Handler Html
 deleteOrderR orderId = do
   runDB $ Import.delete orderId
   setMessage "Objednávka smazána."
+  redirect AdminR
+
+deleteOrdersR :: Handler Html
+deleteOrdersR = do
+  runDB $ deleteWhere ([] :: [Filter Order])
+  setMessage "Objednávky smazány."
   redirect AdminR
 
 getAdminLoginR :: Handler Html

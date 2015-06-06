@@ -19,6 +19,7 @@ data App = App
     , appConnPool    :: ConnectionPool -- ^ Database connection pool.
     , appHttpManager :: Manager
     , appLogger      :: Logger
+    , price          :: IORef Int
     }
 
 instance HasHttpManager App where

@@ -19,6 +19,9 @@ getHomeR = do
     email <- requireEmail
     mfood <- orderedFoodForEmail email
 
+    priceRef <- fmap price getYesod
+    defaultFoodPrice <- liftIO $ readIORef priceRef
+
     (form, _) <- generateFormPost $ orderForm foods Nothing email
     defaultLayout $ do
         setTitle "Czechifood"
@@ -44,6 +47,9 @@ postHomeR = do
 
       return ()
     _ -> return ()
+
+  priceRef <- fmap price getYesod
+  defaultFoodPrice <- liftIO $ readIORef priceRef
 
   defaultLayout $(widgetFile "homepage")
 

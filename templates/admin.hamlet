@@ -22,3 +22,4 @@
         <li>#{name} - <span class="pink">#{count}</span>
   <div class="well">
     <h3>Celková cena: #{price} Kč
+  ^{tlinkToMethodConfirm "DELETE" "Are you sure?" OrdersR [] "Smazat všechny objednávky" }

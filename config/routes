@@ -7,10 +7,13 @@
 / HomeR GET POST
 /welcome WelcomeR GET POST DELETE
 
-/foods FoodsR GET POST
+/foods FoodsR GET POST DELETE
 /foods/#FoodId FoodR GET PUT DELETE
 
 /admin AdminR GET
 /order/#OrderId OrderR DELETE
+/orders OrdersR DELETE
 
 /admin-login AdminLoginR GET POST DELETE
+
+/price PriceR GET

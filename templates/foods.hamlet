@@ -6,6 +6,15 @@
   ^{form}
 
 <br>
+<div class="alert alert-danger">
+  <h2>Nastavení
+  <form action=@{PriceR}>
+    <input type=text name=price>
+    <input class="btn btn-primary" type=submit value="Změň cenu za jídlo!">
+
+  ^{tlinkToMethodConfirm "DELETE" "Are you sure?" FoodsR [] "Smazat všechny jídla" }
+<br>
+
 <h2>Všechny jídla
 <table class="table">
   <tr>

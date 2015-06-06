@@ -11,10 +11,6 @@ emailSessionKey = "email"
 adminSessionKey :: Text
 adminSessionKey = "password"
 
-defaultFoodPrice :: Int
-defaultFoodPrice = 150
-
-
 requireAdmin action = do
   isLogged <- isAdmin
   if isLogged

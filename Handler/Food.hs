@@ -11,12 +11,27 @@ foodForm food = renderBootstrap3 BootstrapBasicForm $ Food
             <*> aopt textField (bfs ("Url obrázku" :: Text)) (foodImageUrl `fmap` food)
             <*  bootstrapSubmit (BootstrapSubmit ("Odeslat" :: Text) "btn-default" [])
 
+getPriceR :: Handler Html
+getPriceR = requireAdmin $ do
+  newPrice <- runInputGet $ ireq intField "price"
+
+  x <- fmap price getYesod
+  liftIO $ writeIORef x newPrice
+
+  setMessage "Cena nastavena."
+  redirect FoodsR
 
 getFoodsR :: Handler Html
 getFoodsR = requireAdmin $ do
   (form, _) <- generateFormPost $ foodForm Nothing
   foods <- runDB $ selectList [] [Asc FoodTitle]
   defaultLayout $(widgetFile "foods")
+
+deleteFoodsR :: Handler Html
+deleteFoodsR = do
+  runDB $ deleteWhere ([] :: [Filter Food])
+  setMessage "Jídla smazána."
+  redirect FoodsR
 
 postFoodsR :: Handler Html
 postFoodsR = do
